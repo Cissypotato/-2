@@ -1,0 +1,77 @@
+<view class="container">
+	<view class="page_pack" bindtap="toAddress">
+		<l>
+			<text wx:if="{{address}}">{{address.place}}</text>
+			<text wx:else>请填写你的地址</text>
+		</l>
+		<r>
+			<icon class="iconfont icon-jiantou_xiangyou"></icon>
+		</r>
+	</view>
+	<view class="page_pack" bindtap="handleTimePicker" data-id="1">
+		<l>
+			<text wx:if="{{serveTime}}">{{serveTime}}</text>
+			<text wx:else>上门服务时间</text>
+		</l>
+		<r>
+			<icon class="iconfont icon-jiantou_xiangyou"></icon>
+		</r>
+	</view>
+	<view class="foot_pack">
+		<t class="l">
+			<t>￥{{price}}</t>
+			<test wx:if="{{status==0 && services.price>15}}">首单直减15</test>
+		</t>
+		<t class="r" bindtap="topay">立即支付</t>
+	</view>
+	<view class="cover" wx:if="{{timePickerShow}}">
+		<view class="pick-time">
+			<view class="title">
+				<text >选择服务时间</text>
+				<icon class="iconfont icon-icon-cross-squre" bindtap="handleTimePicker" data-id="0"></icon>
+			</view>
+			<scroll-view class="scroll-view_H date-picker" scroll-x="true" bindscroll="scroll" style="width: 100%">
+				<view class="scroll-view-item_H" style="{{num==0?'opacity:1':'opacity:0.5'}}" data-id="{{dateArr[0].id}}" bindtap="chooseDate" data-num="0">
+					<t>今天</t><b>{{dateArr[0].date}}</b>
+				</view>
+				<view class="scroll-view-item_H" style="{{num==1?'opacity:1':'opacity:0.5'}}" data-id="{{dateArr[1].id}}" bindtap="chooseDate" data-num="1">
+					<t>明天</t><b>{{dateArr[1].date}}</b>
+				</view>
+				<view class="scroll-view-item_H" style="{{num==2?'opacity:1':'opacity:0.5'}}" data-id="{{dateArr[2].id}}" bindtap="chooseDate" data-num="2">
+					<t>后天</t><b>{{dateArr[2].date}}</b>
+				</view>
+				<view class="scroll-view-item_H" style="{{num==3?'opacity:1':'opacity:0.5'}}" data-id="{{dateArr[3].id}}" bindtap="chooseDate" data-num="3">
+					<t>第四天</t><b>{{dateArr[3].date}}</b>
+				</view>
+				<view class="scroll-view-item_H" style="{{num==4?'opacity:1':'opacity:0.5'}}" data-id="{{dateArr[4].id}}" bindtap="chooseDate" data-num="4">
+					<t>第五天</t><b>{{dateArr[4].date}}</b>
+				</view>
+				
+			</scroll-view>
+			
+			<!-- <view id="demo1" class="scroll-view-item_H demo-text-1"></view>
+          <view id="demo2"  class="scroll-view-item_H demo-text-2"></view>
+          <view id="demo3" class="scroll-view-item_H demo-text-3"></view> -->
+			<!-- <view class="date-picker">
+                <view class="mk {{num==0?'active':''}}" data-id="{{dateArr[0].id}}" bindtap="chooseDate" data-num="0">
+                    <t>今天</t><b>{{dateArr[0].date}}</b>
+                </view>
+                <view class="mk {{num==1?'active':''}}" data-id="{{dateArr[1].id}}" bindtap="chooseDate" data-num="1">
+                    <t>明天</t><b>{{dateArr[1].date}}</b>
+                </view>
+                <view class="mk {{num==2?'active':''}}" data-id="{{dateArr[2].id}}" bindtap="chooseDate" data-num="2">
+                    <t>后天</t><b>{{dateArr[2].date}}</b>
+                </view>
+                <view class="clear"></view>
+            </view> -->
+			<view class="time-picker">
+				<view class="wrapper">
+					<view wx:for="{{timeArr}}" wx:key="item" class="time-item {{index_1==index&&item.select?'active':''}} {{item.select?'':'forbid'}}" data-time="{{item.time}}" data-index="{{index}}" bindtap="chooseTime">{{item.time}} </view>
+				</view>
+			</view>
+			<view class="btn-wrapper">
+				<view class="btn" bindtap="timeConfirm">确认</view>
+			</view>
+		</view>
+	</view>
+</view>

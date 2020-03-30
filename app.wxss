@@ -1,0 +1,5 @@
+/**app.wxss**/
+@import '/utils/sz.wxss';
+@import '/utils/iconfont.wxss';
+
+.clear {clear:both;}

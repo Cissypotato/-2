@@ -1,0 +1,21 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/myOrder/myOrder",
+        "pages/personal/myOrder/myOrder",
+        "pages/personal/personal",
+        "pages/order/order",
+        "pages/address/address"
+
+        
+        
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "朗洁家政",
+        "navigationBarTextStyle": "black"
+    },
+    "style": "v2",
+    "sitemapLocation": "sitemap.json"
+}
