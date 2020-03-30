@@ -162,10 +162,12 @@ Page({
     },
     chooseDate(e) { //选择日期
         let id = e.currentTarget.dataset.id;
-        let num = e.currentTarget.dataset.num;
+        // let num =this.data.num;
+        let index=e.currentTarget.dataset.index
         let timeArr = this.data.timeArr;
-        console.log(num)
-        if (num > 0) {
+        // console.log(index)
+        // console.log(num)
+        if (index > 0) {
             for (let i = 0; i < timeArr.length; i++) {
                 timeArr[i].select = true
             };
@@ -175,7 +177,7 @@ Page({
         this.setData({
             timeArr,
             date: id,
-            num
+            num:index
         });
     },
     chooseTime(e) { //选择时间
@@ -211,7 +213,7 @@ Page({
             })
         };
     },
-    getDate() {//获得未来三天的时间
+    getDate() {//获得未来5天的时间
         let dateArr = []
         let timeArr = this.data.timeArr
         for (let i = 0; i < timeArr.length; i++) {
@@ -256,20 +258,19 @@ Page({
         })
     },
     scroll(e) {
-        console.log(e)
+        // console.log(e)
       },
     topay() { //预约并支付
-
         if (this.data.address == null) {
             app.alert("请填写地址")
         } else if (!this.data.date || !this.data.time) {
-            console.log(this.data.date)
-            console.log(this.data.time)
+            // console.log(this.data.date)
+            // console.log(this.data.time)
             app.alert("请选择上门服务时间")
         } else {
             let a = new Date(this.data.upServeTime)
-            console.log(this.data.upServeTime)
-            console.log(a.getTime() / 1000)
+            // console.log(this.data.upServeTime)
+            // console.log(a.getTime() / 1000)
             let upServeTime = a.getTime() / 1000
             wx.request({
                 url: appUrl + '/index.php/index/Pay/addOrder',

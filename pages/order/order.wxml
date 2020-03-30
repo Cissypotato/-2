@@ -30,8 +30,19 @@
 				<text >选择服务时间</text>
 				<icon class="iconfont icon-icon-cross-squre" bindtap="handleTimePicker" data-id="0"></icon>
 			</view>
-			<scroll-view class="scroll-view_H date-picker" scroll-x="true" bindscroll="scroll" style="width: 100%">
-				<view class="scroll-view-item_H" style="{{num==0?'opacity:1':'opacity:0.5'}}" data-id="{{dateArr[0].id}}" bindtap="chooseDate" data-num="0">
+			<scroll-view class="scroll-view_H date-picker" scroll-x="true" bindscroll="scroll" style="width: 100%" >
+			
+			<view class="scroll-view-item_H"  wx:for="{{dateArr}}" style="{{num==index?'opacity:1':'opacity:0.5'}}" data-id="{{item.id}}" bindtap="chooseDate" data-index="{{index}}" wx:key="{{item.id}}">
+					<t wx:if="{{index==0}}">今天</t>
+					<t wx:if="{{index==1}}">明天</t>
+					<t wx:if="{{index==2}}">后天</t>
+					<t wx:if="{{index==3}}">第四天</t>
+					<t wx:if="{{index==4}}">第五天</t>
+					<b>{{item.date}}</b>
+				</view>
+			
+
+				<!-- <view class="scroll-view-item_H" style="{{num==0?'opacity:1':'opacity:0.5'}}" data-id="{{dateArr[0].id}}" bindtap="chooseDate" data-num="0">
 					<t>今天</t><b>{{dateArr[0].date}}</b>
 				</view>
 				<view class="scroll-view-item_H" style="{{num==1?'opacity:1':'opacity:0.5'}}" data-id="{{dateArr[1].id}}" bindtap="chooseDate" data-num="1">
@@ -45,25 +56,10 @@
 				</view>
 				<view class="scroll-view-item_H" style="{{num==4?'opacity:1':'opacity:0.5'}}" data-id="{{dateArr[4].id}}" bindtap="chooseDate" data-num="4">
 					<t>第五天</t><b>{{dateArr[4].date}}</b>
-				</view>
+				</view> -->
 				
 			</scroll-view>
-			
-			<!-- <view id="demo1" class="scroll-view-item_H demo-text-1"></view>
-          <view id="demo2"  class="scroll-view-item_H demo-text-2"></view>
-          <view id="demo3" class="scroll-view-item_H demo-text-3"></view> -->
-			<!-- <view class="date-picker">
-                <view class="mk {{num==0?'active':''}}" data-id="{{dateArr[0].id}}" bindtap="chooseDate" data-num="0">
-                    <t>今天</t><b>{{dateArr[0].date}}</b>
-                </view>
-                <view class="mk {{num==1?'active':''}}" data-id="{{dateArr[1].id}}" bindtap="chooseDate" data-num="1">
-                    <t>明天</t><b>{{dateArr[1].date}}</b>
-                </view>
-                <view class="mk {{num==2?'active':''}}" data-id="{{dateArr[2].id}}" bindtap="chooseDate" data-num="2">
-                    <t>后天</t><b>{{dateArr[2].date}}</b>
-                </view>
-                <view class="clear"></view>
-            </view> -->
+		
 			<view class="time-picker">
 				<view class="wrapper">
 					<view wx:for="{{timeArr}}" wx:key="item" class="time-item {{index_1==index&&item.select?'active':''}} {{item.select?'':'forbid'}}" data-time="{{item.time}}" data-index="{{index}}" bindtap="chooseTime">{{item.time}} </view>
