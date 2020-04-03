@@ -62,7 +62,12 @@
 		
 			<view class="time-picker">
 				<view class="wrapper">
-					<view wx:for="{{timeArr}}" wx:key="item" class="time-item {{index_1==index&&item.select?'active':''}} {{item.select?'':'forbid'}}" data-time="{{item.time}}" data-index="{{index}}" bindtap="chooseTime">{{item.time}} </view>
+					<view wx:for="{{timeArr}}" wx:key="item" class="time-item {{index_1==index&&item.select?'active':''}} {{item.select?'':'forbid'}}" style="{{item.isUrgent && services.is_xb==1?'color:#FF5722':''}}" data-time="{{item.time}}" data-index="{{index}}" bindtap="chooseTime"
+					 data-urgent="{{services.is_xb==1?item.isUrgent:''}}"
+					>
+					{{item.time}} 
+					
+					</view>
 				</view>
 			</view>
 			<view class="btn-wrapper">

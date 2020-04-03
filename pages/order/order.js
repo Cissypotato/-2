@@ -5,40 +5,52 @@ Page({
         timePickerShow: false,
         timeArr: [{
             time: '8:00',
-            id: '8:00'
+            id: '8:00',
+            isUrgent:false
         }, {
             time: '9:00',
-            id: '9:00'
+            id: '9:00',
+            isUrgent:false
         }, {
             time: '10:00',
-            id: '10:00'
+            id: '10:00',
+            isUrgent:false
         }, {
             time: '11:00',
-            id: '11:00'
+            id: '11:00',
+            isUrgent:false
         }, {
             time: '12:00',
-            id: '12:00'
+            id: '12:00',
+            isUrgent:false
         }, {
             time: '13:00',
-            id: '13:00'
+            id: '13:00',
+            isUrgent:false
         }, {
             time: '14:00',
-            id: '14:00'
+            id: '14:00',
+            isUrgent:false
         }, {
             time: '15:00',
-            id: '15:00'
+            id: '15:00',
+            isUrgent:false
         }, {
             time: '16:00',
-            id: '16:00'
+            id: '16:00',
+            isUrgent:false
         }, {
             time: '17:00',
-            id: '17:00'
+            id: '17:00',
+            isUrgent:true
         }, {
             time: '18:00',
-            id: '18:00'
+            id: '18:00',
+            isUrgent:true
         }, {
             time: '19:00',
-            id: '19:00'
+            id: '19:00',
+            isUrgent:true
         },],
         num: 0,
         index_1: 0,
@@ -52,7 +64,7 @@ Page({
         let address_id = options.address_id;
         let user_id = wx.getStorageSync("token");
         let dateArr = this.getDate();
-        console.log(dateArr);
+        // console.log(dateArr);
         this.setData({
             dateArr,
             services_id,
@@ -69,6 +81,9 @@ Page({
                 success: (res) => {
                     let price = 0
                     if (res.data.status == 0 && res.data.services.price > 15) {
+                        // this.setData({
+                        //     is
+                        // })
                         price = (res.data.services.price * 100 - 15 * 100) / 100
                     } else {
                         price = res.data.services.price
@@ -183,6 +198,12 @@ Page({
     chooseTime(e) { //选择时间
         let time = e.currentTarget.dataset.time;
         let index = e.currentTarget.dataset.index;
+        let urgent=e.currentTarget.dataset.urgent
+        if(urgent) {
+            app.alert("此时间段为保洁员加班时间段，每小时服务将加收十元服务费")
+            this.setData({urgent})
+        }
+        
         this.setData({
             time,
             index_1: index
@@ -192,11 +213,21 @@ Page({
         let date = this.data.dateArr[this.data.num].date;
         let date_1 = this.data.dateArr[this.data.num].id;
         let time = '';
+
         if (!this.data.time) {
             time = this.data.timeArr[0].time
         } else {
             time = this.data.time
         };
+        let price=this.data.price
+        console.log(this.data.urgent)
+        if(this.data.urgent){
+            price=this.data.price+10*this.data.services.j_time
+            console.log()
+            this.setData({
+                price
+            })
+        }
         let now = new Date()
         let milliseconds = now.getTime() //现在时间戳
         let thisTime = date_1 + ' ' + time
@@ -278,7 +309,8 @@ Page({
                     user_id: wx.getStorageSync("token"),
                     address_id: this.data.address.id,
                     shop_id: this.data.services_id,
-                    start_time: upServeTime
+                    start_time: upServeTime,
+                    is_jb:this.data.urgent?1:0
                 },
                 success: (res) => {
                     console.log(res)
