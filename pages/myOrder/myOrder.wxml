@@ -86,6 +86,7 @@
 					<view class="add-money-item" wx:if="{{item.status==1}}">
 						<!-- <span class="left">服务费用：</span>
                         <span class="right"> {{item.pay_price}}元</span> -->
+						<span class="add-money" data-index="{{index}}" data-id="{{item.id}}" bindtap="changeDate">更改日期</span>
 						<span class="add-money" data-id="{{item.id}}" bindtap="addMoney">超时加费</span>
 					</view>
 
@@ -125,6 +126,7 @@
 					<view class="add-money-item" wx:if="{{item.status==1}}">
 						<!-- <span class="left">服务费用：</span>
                         <span class="right"> {{item.pay_price}}元</span> -->
+						<span class="add-money" data-index="{{index}}" data-id="{{item.id}}" bindtap="changeDate">更改日期</span>
 						<span class="add-money" data-id="{{item.id}}" bindtap="addMoney">超时加费</span>
 					</view>
 
@@ -222,7 +224,7 @@
 
 </view>
 
-<view class="cover" bindtap="handleCover" catchtouchmove="move" wx:if="{{isAddMoney}}">
+<view class="cover" bindtap="handleCover" catchtouchmove="move" wx:if="{{isAddMoney}}" data-type="money">
 	<view class="add-money-card" catchtap='blueclick'>
 		<view class="title">
 			{{order.name}}
@@ -248,6 +250,33 @@
 		<view class="pay">
 
 			<span bindtap="confirm">确定支付</span>
+		</view>
+
+	</view>
+
+
+</view>
+
+<view class="cover" bindtap="handleCover" catchtouchmove="move" wx:if="{{isChangeDate}}" data-type="date">
+	<view class="add-money-card" catchtap='blueclick'>
+		<view class="title">
+			<!-- {{order.name}} -->
+			更改预约时间
+		</view>
+		
+		<view class="info">
+			温馨提示：服务时间段不能更改，您只能更改未来7天的日期
+		</view>
+		<view class="section">
+			<picker mode="date" value="{{date}}" start="{{tomorrowS}}" end="{{future7S}}" bindchange="bindDateChange">
+				<view class="picker">
+					下拉选择: <span> {{date}}</span>
+				</view>
+			</picker>
+		</view>
+		<view class="pay">
+
+			<span bindtap="confirmChangeDate">确定更改</span>
 		</view>
 
 	</view>

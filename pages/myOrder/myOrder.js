@@ -11,6 +11,8 @@ Page({
     isArr2: false,
     isArr3: false,
     isAddMoney: false,
+    isChangeDate: false,
+    date: '2020-04-21',
     order_data: {
       num: 1
     }
@@ -22,6 +24,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getDate()
   },
 
   onShow: function () {
@@ -32,6 +35,36 @@ Page({
     })
     this.getInitData()
   },
+  getDate(timetamp) {
+    let today = new Date()
+    let tomorrowT = today.getTime() + 1000 * 60 * 60 * 24 * 1
+    let tomorrow = new Date(tomorrowT);
+    let year = tomorrow.getFullYear(); //获取年
+    let month = tomorrow.getMonth() + 1;//获取月
+    let date = tomorrow.getDate();//获取日
+    let tomorrowS = year + '-' + this.conver(month) + "-" + this.conver(date)
+
+    let future7T = today.getTime() + 1000 * 60 * 60 * 24 * 7//未来第七天的时间戳
+    let future7 = new Date(future7T);
+    let year7 = future7.getFullYear(); //获取年
+    let month7 = future7.getMonth() + 1;//获取月
+    let date7 = future7.getDate();//获取日
+    let future7S = year7 + '-' + this.conver(month7) + "-" + this.conver(date7)
+
+    this.setData({
+      date: tomorrowS,
+      tomorrowS,
+      future7S
+    })
+    console.log(tomorrowS)
+
+  },
+
+  //日期时间处理
+  conver(s) {
+    return s < 10 ? '0' + s : s;
+  },
+
   getInitData() {
     let user_id = wx.getStorageSync("token")
     wx.request({
@@ -85,9 +118,27 @@ Page({
     }
 
   },
+  changeDate(e) {
+    let order_id = e.currentTarget.dataset.id
+    console.log(order_id)
+    // let index= e.currentTarget.dataset.index
+    // console.log(e.currentTarget.dataset.index)  
+    wx.request({
+      url: 'https://ljjz.guaishe.com/sxq/demo.php?fa=starttime',
+      data: { id: order_id },
+      success: (result) => {
+        console.log(result)
+        let currentOrderDate = result.data.data
+        this.setData({
+          currentOrderDate,
+          isChangeDate: true,
+          order_id
+        })
+      },
+    })
+  },
   addMoney(e) {//点击超时加费
     let order_id = e.currentTarget.dataset.id
-
     wx.request({
       url: 'https://ljjz.guaishe.com/index.php/index/pay/overDesc',
       data: { order_id },
@@ -128,11 +179,20 @@ Page({
       })
     }
   },
-  handleCover() {
-    let isAddMoney = !this.data.isAddMoney
-    this.setData({
-      isAddMoney
-    })
+  handleCover(e) {
+    let type = e.currentTarget.dataset.type
+    if (type == "money") {
+      let isAddMoney = !this.data.isAddMoney
+      this.setData({
+        isAddMoney
+      })
+    } else if (type == "date") {
+      let isChangeDate = !this.data.isChangeDate
+      this.setData({
+        isChangeDate
+      })
+    }
+
   },
   blueclick() {
     console.log("阻止冒泡")
@@ -152,28 +212,61 @@ Page({
         num: this.data.order_data.num
       },
       success: (result) => {
-        if(result.data.code==200){
-          let order_id=result.data.order_id
+        if (result.data.code == 200) {
+          let order_id = result.data.order_id
           this.pay(order_id)
         }
         console.log(result)
       },
     })
 
+  },
+  confirmChangeDate() {//确认更改时间
+    let currentOrderDate = this.data.currentOrderDate
+    let string = currentOrderDate.split(" ")
+    let dataDate = this.data.date + ' ' + string[1]
+    console.log(dataDate)
+    // let user_id = this.data.user_id
+    let order_id = this.data.order_id
+    wx.request({
+      url: 'https://ljjz.guaishe.com/sxq/demo.php?fa=update&id=%20&date=',
+      data: {
+        id: order_id,
+        date: dataDate
+      },
+      success: (result) => {
+        console.log(result)
 
+        if (result.data.state == 0) {
+          this.setData({ isChangeDate: false })
+          this.getInitData()
+          wx.showToast({
+            icon: "none",
+            title: '更改成功',
+          }, 800)
+          // let order_id = result.data.order_id
+          // this.pay(order_id)
+        }
 
-    // wx.requestPayment()
+      },
+    })
 
+  },
+  bindDateChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      date: e.detail.value
+    })
   },
   pay(id) {//支付
     wx.login({
       complete: (res) => {
-        if(res.code){
+        if (res.code) {
           wx.request({
             url: 'https://ljjz.guaishe.com/index.php/index/pay/payTime',
-            data:{
-              id:id,
-              code:res.code,
+            data: {
+              id: id,
+              code: res.code,
             },
             success: (res) => {
               console.log(res)
@@ -194,25 +287,16 @@ Page({
                         icon: "none",
                         title: '支付成功',
                       }, 800)
-                    
-                       
-                     
-      
-                      //   wx.navigateBack({
-                      //     delta: 2
-                      //   })
-      
-      
                     },
-      
+
                   })
               }
-      
+
             }
           })
         }
       },
     })
-   
+
   }
 })

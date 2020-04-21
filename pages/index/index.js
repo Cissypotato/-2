@@ -145,7 +145,7 @@ Page({
         })
         setTimeout(()=>{
             this.img_ok()
-        },500)
+        },1000)
         wx.hideLoading();
 
         
@@ -222,24 +222,41 @@ Page({
     img_ok(){
         //获取页面标题的高度位置，写入数组，一定要在页面元素加载完成后执行
         var then = this;
-        setTimeout(function () {
-            let arr = ['t1', 't2', 't3', 't4'];
-            let t_list = new Array();
-            for (let k = 0; k < 4; k++) {
-                let p1 = arr[k];
-                let p2 = '#' + p1;
-                let t = wx.createSelectorQuery();
-                t.select(p2).boundingClientRect()
-                t.exec(function (res) {
-                    t_list[k] = res[0].top;
-                });
 
-            };
-            console.log(t_list)
-            then.setData({
-                t_list,
+        let arr = ['t1', 't2', 't3', 't4'];
+        let t_list = new Array();
+        for (let k = 0; k < 4; k++) {
+            let p1 = arr[k];
+            let p2 = '#' + p1;
+            let t = wx.createSelectorQuery();
+            t.select(p2).boundingClientRect()
+            t.exec(function (res) {
+                t_list[k] = res[0].top;
             });
-        },300);
+
+        };
+        console.log(t_list)
+        then.setData({
+            t_list,
+        });
+        // setTimeout(function () {
+        //     let arr = ['t1', 't2', 't3', 't4'];
+        //     let t_list = new Array();
+        //     for (let k = 0; k < 4; k++) {
+        //         let p1 = arr[k];
+        //         let p2 = '#' + p1;
+        //         let t = wx.createSelectorQuery();
+        //         t.select(p2).boundingClientRect()
+        //         t.exec(function (res) {
+        //             t_list[k] = res[0].top;
+        //         });
+
+        //     };
+        //     console.log(t_list)
+        //     then.setData({
+        //         t_list,
+        //     });
+        // },300);
     },
     chooseService(e) {//选择服务
         let id = e.currentTarget.dataset.id;
@@ -381,13 +398,26 @@ Page({
         this.setData({
             tab_index: e.currentTarget.dataset.id
         });
+        console.log(this.data.tab_index)
+        console.log(e.currentTarget.dataset.id)
         let tab_list = this.data.t_list;
+        console.log(tab_list)
         let k = Number(1);
         let d = (Number(e.currentTarget.dataset.id) + k) * 150;
         wx.pageScrollTo({
-            scrollTop: tab_list[e.currentTarget.dataset.id]-170,
-            duration: d
-        });     
+                    scrollTop: tab_list[e.currentTarget.dataset.id]-170,
+                    duration: d
+                }); 
+        // if(e.currentTarget.dataset.id==0){
+
+        // }else if(e.currentTarget.dataset.id==1){
+        //     let distance=
+        //     wx.pageScrollTo({
+        //         scrollTop: tab_list[e.currentTarget.dataset.id]-170,
+        //         duration: d
+        //     });  
+        // }
+          
     },
     onPageScroll: function (e) {//监测滚动事件
         // console.log(e.scrollTop)

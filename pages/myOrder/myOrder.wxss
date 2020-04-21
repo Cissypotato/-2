@@ -28,8 +28,8 @@ page{background: rgb(246,246,246)}
 .card>.item>.right{color: #555;display: inline-block;width: 70%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 
 .add-money-item{font-size: 28rpx;display: inline-flex;width: 100%;box-sizing: border-box;flex-direction: row-reverse;}
-.add-money{color:#fff;background: #35BB9A;display: inline-block;padding: 6rpx 20rpx;border-radius: 18rpx;margin-top: 6rpx;}
-
+/* .add-money{color:#fff;background: #35BB9A;display: inline-block;padding: 6rpx 20rpx;border-radius: 18rpx;margin-top: 6rpx;} */
+.add-money{color:#35BB9A;display: inline-block;padding: 6rpx 20rpx;border-radius: 18rpx;margin-top: 6rpx;}
 
 .cover{width: 100vw;height: 100vh;background: rgba(0,0,0,0.3);position: fixed;top: 0;left: 0; display: flex;justify-content: center;align-items: center;}
 
@@ -41,6 +41,10 @@ page{background: rgb(246,246,246)}
 .total{font-size: 34rpx;}
 .total>span>span{color:rgb(230,67,64);}
 .pay>span{display: block;padding: 10rpx 22rpx;border-radius: 16rpx;color: #fff;background: rgb(230,67,64);}
+
+.add-money-card>.info{color: #aaa;font-size: 25rpx;}
+.add-money-card>.section{margin-top: 20rpx;}
+.add-money-card>.section span{font-weight: 600;}
 
 .order_two_num {
     height: 100rpx;
