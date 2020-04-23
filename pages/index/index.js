@@ -8,7 +8,7 @@ Page({
         loginData: {},
         second:60,
         showSecond:false,
-
+        service_num:1,
         //以下为页面初始需要从服务端加载的数据
         info_data:{//页面说明数据，包含产品名称、优惠信息、公司信息等
             info_1: '日常家居保洁服务',
@@ -129,9 +129,10 @@ Page({
         tab_title_show:false,
     },
     onLoad: function(options) {
+        this.getCode()
 
         //获取页面ID
-        let type_id=options.id?options.id:6
+        let type_id=options.id?options.id:26
         console.log(type_id)
         this.setData({type_id})
         this.getInitData(type_id)
@@ -151,6 +152,14 @@ Page({
         
     },
     onShow() {
+      //获得物管id
+       let obj = wx.getLaunchOptionsSync()
+        console.log(obj)
+        console.log("obj")
+        if(obj.query.server_id){
+            wx.setStorageSync('server_id', obj.query.server_id)
+            console.log(obj.query.server_id)
+        }
 
     },
     onReady: function () {
@@ -196,8 +205,17 @@ Page({
             for(let i=0;i<comment_data.length;i++){
                 comment_data[i].user_tel=comment_data[i].user_tel.replace(/^(\d{3})\d{4}(\d+)/,"$1****$2")
             }
+            let banner_data=[]
+            for(let i=0;i<data.img.length;i++){
+                console.log(data.img[i])
+                if(data.img[i].img.slice(-3)=="jpg"){
+                    banner_data.push(data.img[i])
+                }
+            }
+            // console.log(data.img,"data.img")
+            // console.log( banner_data," banner_data")
             this.setData({
-                banner_data:data.img,
+                banner_data,
                 info_data,
                 serve_data,
                 question_data:data.problem,
@@ -349,17 +367,20 @@ Page({
         let code = this.data.loginData.code
         let tel = this.data.loginData.tel
         let tel_1 = this.data.tel_1
+        let server_id=wx.getStorageSync('server_id')
         if (Number(code) !== Number(this.data.tel_code)) {
             app.alert("验证码填写错误，请重新填写")
         } else if (tel !== tel_1) {
             app.alert("手机号码与验证码不匹配，请重新填写")
         } else {
             wx.request({
-                url: 'https://ljjz.guaishe.com/index.php/index/Login/returnId',
+                url: 'https://ljjz.guaishe.com/index.php/index/Login/returnId1',
                 data: {
-                    tel: this.data.loginData.tel
+                    tel: this.data.loginData.tel,
+                    server_id:server_id?server_id:7
                 },
                 success: (res) => {
+
                     if (res.data.code == 200) {
                         wx.setStorageSync("token", res.data.id)
                         this.setData({
@@ -497,4 +518,28 @@ Page({
             path: '/pages/index/index?id='+this.data.type_id
         }
     },
+    getSCode(){//获取小程序二维码
+        wx.request({
+          url: 'https://ljjz.guaishe.com/index.php/index/login/getAccessToken',
+          complete: (res) => {},
+          data: {
+              path:"pages/index/index?server_id=1"
+            } ,
+          
+          success: (result) => {
+              console.log(result)
+          },
+        })
+    },
+    handleServiceNum(e){
+        let type=e.currentTarget.dataset.type
+        let service_num=this.data.service_num
+        if(type=="reduce" &&service_num>1){
+            service_num =service_num -1
+            this.setData({service_num})
+        }else if(type=="add"){
+            service_num ++
+            this.setData({service_num})
+        }
+    }
 })
