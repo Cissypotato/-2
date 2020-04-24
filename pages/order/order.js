@@ -61,6 +61,8 @@ Page({
         console.log(options)
         //console.log(services_id)
         let services_id = options.service_id;
+        let service_num=options.service_num?options.service_num:1;
+        console.log(service_num)
         let address_id = options.address_id;
         let user_id = wx.getStorageSync("token");
         let dateArr = this.getDate();
@@ -68,7 +70,8 @@ Page({
         this.setData({
             dateArr,
             services_id,
-            address_id
+            address_id,
+            service_num
         })
         if (address_id) {
             wx.request({
@@ -76,7 +79,8 @@ Page({
                 data: {
                     address_id,
                     services_id,
-                    user_id
+                    user_id,
+
                 },
                 success: (res) => {
                     let price = 0
@@ -84,9 +88,9 @@ Page({
                         // this.setData({
                         //     is
                         // })
-                        price = (res.data.services.price * 100 - 15 * 100) / 100
+                        price = (res.data.services.price * 100*service_num - 15 * 100) / 100
                     } else {
-                        price = res.data.services.price
+                        price = res.data.services.price*service_num
                     };
                     this.setData({
                         address: res.data.address,
@@ -102,15 +106,16 @@ Page({
                 url: 'https://ljjz.guaishe.com/index.php/index/Services/orderInfo',
                 data: {
                     services_id,
-                    user_id
+                    user_id,
+                    
                 },
                 success: (res) => {
                     console.log(res)
                     let price = 0
                     if (res.data.status == 0 && res.data.services.price > 15) {
-                        price = (res.data.services.price * 100 - 15 * 100) / 100
+                        price = (res.data.services.price*service_num * 100 - 15 * 100) / 100
                     } else {
-                        price = res.data.services.price
+                        price = res.data.services.price*service_num
                     }
                     this.setData({
                         address: res.data.address,
@@ -128,6 +133,7 @@ Page({
         let user_id = wx.getStorageSync("token")
         let services_id = this.data.services_id
         let address_id = this.data.address_id
+        let service_num=this.data.service_num
         // console.log(address_id)
         if (!address_id) {
             wx.showLoading({
@@ -143,9 +149,9 @@ Page({
                     console.log(res)
                     let price = 0
                     if (res.data.status == 0 && res.data.services.price > 15) {
-                        price = (res.data.services.price * 100 - 15 * 100) / 100
+                        price = (res.data.services.price*service_num * 100 - 15 * 100) / 100
                     } else {
-                        price = res.data.services.price
+                        price = res.data.services.price*service_num
                     }
                     this.setData({
                         address: res.data.address,
@@ -310,7 +316,8 @@ Page({
                     address_id: this.data.address.id,
                     shop_id: this.data.services_id,
                     start_time: upServeTime,
-                    is_jb:this.data.urgent?1:0
+                    is_jb:this.data.urgent?1:0,
+                    num:this.data.service_num
                 },
                 success: (res) => {
                     console.log(res)

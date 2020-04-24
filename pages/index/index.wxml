@@ -1,47 +1,48 @@
 <view style='height:{{clientHeight}}px; {{showLogin?"overflow-y:hidden":""}};'>
-    <swiper indicator-dots="true" indicator-color="rgba(0,188,212,0.3)" indicator-active-color="#00bcd4" autoplay="true" interval="2000">
-        <swiper-item wx:for="{{banner_data}}" wx:key="item">
-            <view class="swiper-item">
-                <image mode="widthFix" class="b_img" src="{{item.img}}"></image>
-            </view>
-        </swiper-item>
-    </swiper>
+	<swiper indicator-dots="true" indicator-color="rgba(0,188,212,0.3)" indicator-active-color="#00bcd4" autoplay="true" interval="2000">
+		<swiper-item wx:for="{{banner_data}}" wx:key="item">
+			<view class="swiper-item">
+				<image mode="widthFix" class="b_img" src="{{item.img}}"></image>
+			</view>
+		</swiper-item>
+	</swiper>
 
-    <view class="select-wrapper">
-        <view class="t">{{info_data.info_1}}
-            <view class="i">{{info_data.info_2}}</view>
-        </view>
-    </view>
+	<view class="select-wrapper">
+		<view class="t">{{info_data.info_1}}
+			<view class="i">{{info_data.info_2}}</view>
+		</view>
+	</view>
 
-    <view class="scroll-top bc"></view>
-    <scroll-view class="scroll-view_H bc" scroll-x="true">
-        <view class="scroll-view-item_H {{service_index==index?'scroll-view-item_active':''}}" wx:for="{{serve_data}}" wx:key="item" data-id="{{item.id}}" bindtap="chooseService" data-index="{{index}}">
-            <view class="info_1">{{item.title}}</view>
-            <view class="info_2">
-            {{item.pingmi}}
-                <text class="time">{{item.unit}}</text>
-            </view>
-            <view class="info_3">
-                <span wx:for="{{item.price_a}}" wx:key="item" wx:for-item="it">
-                    <icon class="iconfont icon-A{{it}} l"></icon>
-                </span>
-                <span class="yuan">元</span>
+	<view class="scroll-top bc"></view>
+	<scroll-view class="scroll-view_H bc" scroll-x="true">
+		<view class="scroll-view-item_H {{service_index==index?'scroll-view-item_active':''}}" wx:for="{{serve_data}}" wx:key="item" data-id="{{item.id}}" bindtap="chooseService" data-index="{{index}}">
+			<view class="info_1">{{item.title}}</view>
+			<view class="info_2">
+				{{item.pingmi}}
+				<text class="time">{{item.unit}}</text>
+			</view>
+			<view class="info_3">
+				<span wx:for="{{item.price_a}}" wx:key="item" wx:for-item="it">
+					<icon class="iconfont icon-A{{it}} l"></icon>
+				</span>
+				<span class="yuan">元</span>
+                <!-- <span class="vip">{{item.vip_price}}元 <span>vip</span></span> -->
 
-                <icon class="iconfont icon-tubiaozhizuomoban- r"></icon>
-                <!-- <view>
+				<icon class="iconfont icon-tubiaozhizuomoban- r"></icon>
+				<!-- <view>
                     <span bindtap="handleServiceNum" data-type="reduce">-</span>{{service_num}}<span bindtap="handleServiceNum" data-type="add">+</span>
                 
                 </view> -->
-            </view>
-        </view>
-    </scroll-view>
+			</view>
+		</view>
+	</scroll-view>
 
-    <view class="coupon-pack">
-        <icon class="iconfont icon-zhuyi"></icon>
-        <text>{{info_data.info_3}}</text>
-    </view>
+	<view class="coupon-pack">
+		<icon class="iconfont icon-zhuyi"></icon>
+		<text>{{info_data.info_3}}</text>
+	</view>
 
-    <!--
+	<!--
     <view class="line"></view>
     <view class="m-wrapper" bindtap="tap_info">
         <l><span class="iconfont icon-gou "></span>价格保障</l>
@@ -55,180 +56,222 @@
     </view>
     -->
 
-    <view class="{{tab_title_show?'page_tab':''}}" id="tab_k">
-        <view class="tab_title" wx:if="{{tab_title_show}}">{{info_data.info_1}}</view>
-        <view class="line"></view>
-        <view class="tab_pack">
-            <view class="tab" data-id="0" bindtap="tabClick">
-                <t>服务内容</t>
-                <c class="{{tab_index==0?'c':''}}"></c>
-            </view>
-            <view class="tab" data-id="1" bindtap="tabClick">
-                <t>费用说明</t>
-                <c class="{{tab_index==1?'c':''}}"></c>
-            </view>
-            <view class="tab" data-id="2" bindtap="tabClick">
-                <t>服务推荐</t>
-                <c class="{{tab_index==2?'c':''}}"></c>
-            </view>
-            <view class="tab" data-id="3" bindtap="tabClick">
-                <t>用户评价</t>
-                <c class="{{tab_index==3?'c':''}}"></c>
-            </view>
-            <view class="clear"></view>
-        </view>
-        <view class="line"></view>
-    </view>
+	<view class="{{tab_title_show?'page_tab':''}}" id="tab_k">
+		<view class="tab_title" wx:if="{{tab_title_show}}">{{info_data.info_1}}</view>
+		<view class="line"></view>
+		<view class="tab_pack">
+			<view class="tab" data-id="0" bindtap="tabClick">
+				<t>服务内容</t>
+				<c class="{{tab_index==0?'c':''}}"></c>
+			</view>
+			<view class="tab" data-id="1" bindtap="tabClick">
+				<t>费用说明</t>
+				<c class="{{tab_index==1?'c':''}}"></c>
+			</view>
+			<view class="tab" data-id="2" bindtap="tabClick">
+				<t>服务推荐</t>
+				<c class="{{tab_index==2?'c':''}}"></c>
+			</view>
+			<view class="tab" data-id="3" bindtap="tabClick">
+				<t>用户评价</t>
+				<c class="{{tab_index==3?'c':''}}"></c>
+			</view>
+			<view class="clear"></view>
+		</view>
+		<view class="line"></view>
+	</view>
 
-    <view class="page_pack">
-        <view class="title_pack" id="t1">
-            <view class="title_line"></view>
-            <text>服务内容</text>
-        </view>
-        <!-- <image mode="widthFix" class="info_image" src="{{}}" bindload="img_ok"></image> -->
-        <rich-text nodes="{{a}}"></rich-text>
-    </view>
+	<view class="page_pack">
+		<view class="title_pack" id="t1">
+			<view class="title_line"></view>
+			<text>服务内容</text>
+		</view>
+		<!-- <image mode="widthFix" class="info_image" src="{{}}" bindload="img_ok"></image> -->
+		<rich-text nodes="{{a}}"></rich-text>
+	</view>
 
-    <view class="line"></view>
-    <view class="page_pack">
-        <view class="title_pack" id="t2">
-            <view class="title_line"></view>
-            <text>费用说明</text>
-        </view>
-        <view class="text_pack">
-            <view wx:for="{{explain_data}}" wx:key="item">
-                <t>{{index+1}}、{{item.t}}</t>
-            </view>
-        </view>
-    </view>
+	<view class="line"></view>
+	<view class="page_pack">
+		<view class="title_pack" id="t2">
+			<view class="title_line"></view>
+			<text>费用说明</text>
+		</view>
+		<view class="text_pack">
+			<view wx:for="{{explain_data}}" wx:key="item">
+				<t>{{index+1}}、{{item.t}}</t>
+			</view>
+		</view>
+	</view>
 
-  <view class="line"></view>
-    <view class="page_pack">
-        <view class="title_pack" id="t3">
-            <view class="title_line"></view>
-            <text>服务推荐</text>
-        </view>
-        <view class="recommend_pack">
-           <view wx:for="{{like}}" wx:key="item">
-                <l>
-                    <t>{{item.name}}</t>
-                    <f>{{item.names}}</f>
-                </l>
-                <c></c>
-                <r bindtap="toIndex" data-id="{{item.id}}" class="toIndex">
-                 <icon class="iconfont icon-dianji"></icon>
-                 <view>点击到达</view>
-                </r>
-                <view class="clear"></view>
-            </view>
-        
-            <view wx:for="{{recommend_data}}" wx:key="item">
-                <l>
-                    <t>{{item.name}}</t>
-                    <f>{{item.info}}</f>
-                </l>
-                <c></c>
-                <r bindtap="toIndex" data-id="{{item.id}}">{{item.link}}</r>
-                <view class="clear"></view>
-            </view>
-        </view>
-    </view>
-    
+	<view class="line"></view>
+	<view class="page_pack">
+		<view class="title_pack" id="t3">
+			<view class="title_line"></view>
+			<text>服务推荐</text>
+		</view>
+		<view class="recommend_pack">
+			<view wx:for="{{like}}" wx:key="item">
+				<l>
+					<t>{{item.name}}</t>
+					<f>{{item.names}}</f>
+				</l>
+				<c></c>
+				<r bindtap="toIndex" data-id="{{item.id}}" class="toIndex">
+					<icon class="iconfont icon-dianji"></icon>
+					<view>点击到达</view>
+				</r>
+				<view class="clear"></view>
+			</view>
 
-    <view class="line"></view>
-    <view class="page_pack">
-        <view class="title_pack" id="t4">
-            <view class="title_line"></view>
-            <text>用户评价</text>
-        </view>
-        <view class="comment_pack" wx:for="{{comment_data}}" wx:key="item">
-            <view class="user_pack">
-                <view class="l">
-                    <image mode="widthFix" class="info_image" src="{{item.user_img}}"></image>
-                </view>
-                <view class="r">
-                    <view class="tel">{{item.user_tel}}</view>
-                    <image mode="widthFix" src="../../images/face/stars.png"></image>
-                </view>
-                <view class="clear"></view>
-            </view>
-            <view class="text_pack">{{item.content}}</view>
-            <view class="img_pack"></view>
-        </view>
-    </view>
-
-  <view class="line"></view>
-    <view class="page_pack">
-        <view class="title_pack" >
-            <view class="title_line"></view>
-            <text>常见问题</text>
-        </view>
-        <view class="text_pack">
-            <view wx:for="{{question_data}}" wx:key="item">
-                <q>问：{{item.ask}}</q>
-                <t>{{item.answer}}</t>
-            </view>
-        </view>
-    </view>
-
-    <view class="line"></view>
-    <view class="page_pack">
-        <view class="title_pack">
-            <view class="title_line"></view>
-            <text>下单流程</text>
-        </view>
-        <image mode="widthFix" class="info_image" src="../../images/b2.png"></image>
-        <view class="mod_pack">
-            <view class="mod">
-                <span>线上预订</span>
-                <span>支付服务费</span>
-            </view>
-            <view class="mod">
-                <span>商家线上</span>
-                <span>快速接单</span>
-            </view>
-            <view class="mod">
-                <span>电话沟通</span>
-                <span>上门服务</span>
-            </view>
-            <view class="mod">
-                <span>服务完成</span>
-                <span>线上确认</span>
-            </view>
-        </view>
-    </view>
+			<view wx:for="{{recommend_data}}" wx:key="item">
+				<l>
+					<t>{{item.name}}</t>
+					<f>{{item.info}}</f>
+				</l>
+				<c></c>
+				<r bindtap="toIndex" data-id="{{item.id}}">{{item.link}}</r>
+				<view class="clear"></view>
+			</view>
+		</view>
+	</view>
 
 
+	<view class="line"></view>
+	<view class="page_pack">
+		<view class="title_pack" id="t4">
+			<view class="title_line"></view>
+			<text>用户评价</text>
+		</view>
+		<view class="comment_pack" wx:for="{{comment_data}}" wx:key="item">
+			<view class="user_pack">
+				<view class="l">
+					<image mode="widthFix" class="info_image" src="{{item.user_img}}"></image>
+				</view>
+				<view class="r">
+					<view class="tel">{{item.user_tel}}</view>
+					<image mode="widthFix" src="../../images/face/stars.png"></image>
+				</view>
+				<view class="clear"></view>
+			</view>
+			<view class="text_pack">{{item.content}}</view>
+			<view class="img_pack"></view>
+		</view>
+	</view>
 
-    <view class="line"></view>
+	<view class="line"></view>
+	<view class="page_pack">
+		<view class="title_pack">
+			<view class="title_line"></view>
+			<text>常见问题</text>
+		</view>
+		<view class="text_pack">
+			<view wx:for="{{question_data}}" wx:key="item">
+				<q>问：{{item.ask}}</q>
+				<t>{{item.answer}}</t>
+			</view>
+		</view>
+	</view>
 
-    <view class="page_bottom bc">
-        <t>{{info_data.info_4}}</t>
-        <t>{{info_data.info_5}}</t>
-    </view>
+	<view class="line"></view>
+	<view class="page_pack">
+		<view class="title_pack">
+			<view class="title_line"></view>
+			<text>下单流程</text>
+		</view>
+		<image mode="widthFix" class="info_image" src="../../images/b2.png"></image>
+		<view class="mod_pack">
+			<view class="mod">
+				<span>线上预订</span>
+				<span>支付服务费</span>
+			</view>
+			<view class="mod">
+				<span>商家线上</span>
+				<span>快速接单</span>
+			</view>
+			<view class="mod">
+				<span>电话沟通</span>
+				<span>上门服务</span>
+			</view>
+			<view class="mod">
+				<span>服务完成</span>
+				<span>线上确认</span>
+			</view>
+		</view>
+	</view>
 
-    <view class="bubble" animation="{{bubble_anima}}" wx:if="{{user_id==0}}">{{info_data.info_3}}</view>
 
-    <view class="foot_pack">
-        <t class="l" bindtap="toMyOrder">我的订单</t>
-        <t class="l" bindtap="makePhone">电话预约</t>
-        <t class="r" bindtap="reserve">立即预约</t>
-    </view>
+
+	<view class="line"></view>
+
+	<view class="page_bottom bc">
+		<t>{{info_data.info_4}}</t>
+		<t>{{info_data.info_5}}</t>
+	</view>
+
+	<view class="bubble" animation="{{bubble_anima}}" wx:if="{{user_id==0}}">{{info_data.info_3}}</view>
+
+	<view class="foot_pack">
+		<t class="l" bindtap="toMyOrder">我的订单</t>
+		<t class="l" bindtap="makePhone">电话预约</t>
+		<t class="r" bindtap="reserve">立即预约</t>
+	</view>
 </view>
 <view class="cover" wx:if="{{showLogin}}">
-    <view class="login">
-        <view class="title">登录后查看更多服务</view>
-        <view class="tel">
-            <input type="number" placeholder="请输入您的手机号码" placeholder-class="placeholder" bindinput="getInputValue" data-name="tel"></input>
-        </view>
-        <view class="certifycode">
-            <input name='certifycode' placeholder="请输入验证码" placeholder-class="placeholder" bindinput="getInputValue" data-name="code"></input>
-            <span wx:if="{{showSecond}}">{{second}} s</span>
-            <span bindtap="getCode" wx:else>获取验证码</span>
-        </view>
+	<view class="login">
+		<view class="title">登录后查看更多服务</view>
+		<view class="tel">
+			<input type="number" placeholder="请输入您的手机号码" placeholder-class="placeholder" bindinput="getInputValue" data-name="tel"></input>
+		</view>
+		<view class="certifycode">
+			<input name='certifycode' placeholder="请输入验证码" placeholder-class="placeholder" bindinput="getInputValue" data-name="code"></input>
+			<span wx:if="{{showSecond}}">{{second}} s</span>
+			<span bindtap="getCode" wx:else>获取验证码</span>
+		</view>
+		<view class="btn">
+			<span class="cancel" bindtap="closeLogin">取消</span>
+			<span class="login-w" bindtap="login">登录</span>
+		</view>
+	</view>
+</view>
+<!-- <view class="cover" wx:if="{{isAddNum}}" catchtouchmove="move" >
+	<view class="add-num-wrapper" catchtap="a">
+		<view></view>
+		<view> 数量：<span data-type="reduce" bindtap="handleServiceNum">-</span>{{service_num}}<span data-type="add" bindtap="handleServiceNum">+</span></view>
+        <view class="price">价格：</view>
         <view class="btn">
-            <span class="cancel" bindtap="closeLogin">取消</span>
-            <span class="login-w" bindtap="login">登录</span>
-        </view>
-    </view>
+			
+			<span class="login-w" bindtap="numConfirm">确定</span>
+		</view>
+	</view>
+</view> -->
+<view class="cover2"  catchtouchmove="move" wx:if="{{isAddNum}}" bindtap="closeAddNum" >
+	<view class="add-money-card" catchtap="a">
+		<view class="title">
+			{{service_name}}
+		</view>
+		<view class="price">
+			单价 : <span>{{service_price}}元</span>
+		</view>
+		<!-- <view class="num">
+     数量：<span class=""> </span> <span class=""> </span> <span class=""> </span>
+    </view> -->
+		<view class="order_two_num">
+			<text class="order_two_name_text">购买数量</text>
+			<view class="order_two_num_two">
+				<view class="order_two_num_add" data-type="reduce" bindtap="handleServiceNum">-</view>
+				<span class="order_two_num_inputs">{{service_num}}</span>
+				<view class="order_two_num_add" data-type="add" bindtap="handleServiceNum">+</view>
+				<!-- <input class="order_two_num_add" type="button" value="+" bindtap="add" /> -->
+			</view>
+		</view>
+		<view class="total">
+			<span>总价：<span>{{service_num*service_price}}</span>元</span>
+		</view>
+		<view class="pay">
+			<span bindtap="numConfirm">确定</span>
+		</view>
+
+	</view>
+
+
 </view>

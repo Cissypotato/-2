@@ -2,13 +2,12 @@ const app = getApp();
 Page({
     data: {
         showLogin: false,
-        
-
         service_index: 0,
         loginData: {},
         second:60,
         showSecond:false,
         service_num:1,
+        isAddNum:false,
         //以下为页面初始需要从服务端加载的数据
         info_data:{//页面说明数据，包含产品名称、优惠信息、公司信息等
             info_1: '日常家居保洁服务',
@@ -132,7 +131,7 @@ Page({
         this.getCode()
 
         //获取页面ID
-        let type_id=options.id?options.id:26
+        let type_id=options.id?options.id:6
         console.log(type_id)
         this.setData({type_id})
         this.getInitData(type_id)
@@ -207,7 +206,7 @@ Page({
             }
             let banner_data=[]
             for(let i=0;i<data.img.length;i++){
-                console.log(data.img[i])
+                // console.log(data.img[i])
                 if(data.img[i].img.slice(-3)=="jpg"){
                     banner_data.push(data.img[i])
                 }
@@ -279,9 +278,13 @@ Page({
     chooseService(e) {//选择服务
         let id = e.currentTarget.dataset.id;
         let index = e.currentTarget.dataset.index;
+        let service_name=this.data.serve_data[index].title
+        let service_price=this.data.serve_data[index].price
         this.setData({
             service_index: index,
-            service_id: id
+            service_id: id,
+            service_name,
+            service_price
         });
     },
     makePhone(){
@@ -295,10 +298,25 @@ Page({
                 showLogin: true
             });
         }else{
-            let id = Number(this.data.serve_data[this.data.service_index].id);
-            wx.navigateTo({
-                url: '../order/order?service_id=' + id,
-            });
+            if(this.data.type_id==26){
+                this.setData({
+                    isAddNum:true
+                })
+                let service_name=this.data.serve_data[this.data.service_index].title
+                let service_price=this.data.serve_data[this.data.service_index].price
+                console.log(service_name,'service_name')
+                this.setData({
+                    service_name,
+                    service_price
+                })
+            }else{
+                let id = Number(this.data.serve_data[this.data.service_index].id);
+               
+                wx.navigateTo({
+                    url: '../order/order?service_id=' + id,
+                });
+            }
+           
         };
     },
     getInputValue(e) {
@@ -540,6 +558,26 @@ Page({
         }else if(type=="add"){
             service_num ++
             this.setData({service_num})
+        }else if(type=="reduce" &&service_num==1){
+           app.alert('不能再减啦')
         }
+    },
+    move(){
+        return
+    },
+    numConfirm(){
+        let service_num=this.data.service_num
+        let id = Number(this.data.serve_data[this.data.service_index].id);
+        wx.navigateTo({
+            url: '../order/order?service_id=' + id+'&service_num='+service_num,
+        });
+    },
+    closeAddNum(){
+        this.setData({
+            isAddNum:false
+        })
+    },
+    a(){
+        console.log("阻止冒泡")
     }
 })
