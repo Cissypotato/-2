@@ -5,7 +5,8 @@
         "pages/personal/myOrder/myOrder",
         "pages/personal/personal",
         "pages/order/order",
-        "pages/address/address"
+        "pages/address/address",
+        "pages/vip/vip"
 
         
         

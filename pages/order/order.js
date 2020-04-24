@@ -60,6 +60,7 @@ Page({
     onLoad: function (options) {
         console.log(options)
         //console.log(services_id)
+        let vip_state=wx.getStorageSync('vip_state')
         let services_id = options.service_id;
         let service_num=options.service_num?options.service_num:1;
         console.log(service_num)
@@ -71,7 +72,8 @@ Page({
             dateArr,
             services_id,
             address_id,
-            service_num
+            service_num,
+            vip_state
         })
         if (address_id) {
             wx.request({
@@ -83,14 +85,21 @@ Page({
 
                 },
                 success: (res) => {
-                    let price = 0
+                    var price = 0
                     if (res.data.status == 0 && res.data.services.price > 15) {
-                        // this.setData({
-                        //     is
-                        // })
-                        price = (res.data.services.price * 100*service_num - 15 * 100) / 100
+                        if(vip_state==1){
+                            price = (res.data.services.vip_price * 100*service_num - 15 * 100) / 100
+                        }else{
+                            price = (res.data.services.price * 100*service_num - 15 * 100) / 100
+                        }
+                        
                     } else {
-                        price = res.data.services.price*service_num
+                        if(vip_state==1){
+                            price = res.data.services.vip_price*service_num
+                        }else{
+                            price = res.data.services.price*service_num
+                        }
+                        
                     };
                     this.setData({
                         address: res.data.address,
@@ -111,7 +120,7 @@ Page({
                 },
                 success: (res) => {
                     console.log(res)
-                    let price = 0
+                    var price = 0
                     if (res.data.status == 0 && res.data.services.price > 15) {
                         price = (res.data.services.price*service_num * 100 - 15 * 100) / 100
                     } else {
@@ -147,12 +156,22 @@ Page({
                 },
                 success: (res) => {
                     console.log(res)
-                    let price = 0
+                   var price = 0
                     if (res.data.status == 0 && res.data.services.price > 15) {
-                        price = (res.data.services.price*service_num * 100 - 15 * 100) / 100
+                        if(this.data.vip_state==1){
+                            price = (res.data.services.vip_price * 100*service_num - 15 * 100) / 100
+                        }else{
+                            price = (res.data.services.price * 100*service_num - 15 * 100) / 100
+                        }
+                        
                     } else {
-                        price = res.data.services.price*service_num
-                    }
+                        if(this.data.vip_state==1){
+                            price = res.data.services.vip_price*service_num
+                        }else{
+                            price = res.data.services.price*service_num
+                        }
+                        
+                    };
                     this.setData({
                         address: res.data.address,
                         services: res.data.services,

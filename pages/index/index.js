@@ -8,6 +8,7 @@ Page({
         showSecond:false,
         service_num:1,
         isAddNum:false,
+        flag: true,
         //以下为页面初始需要从服务端加载的数据
         info_data:{//页面说明数据，包含产品名称、优惠信息、公司信息等
             info_1: '日常家居保洁服务',
@@ -153,12 +154,24 @@ Page({
     onShow() {
       //获得物管id
        let obj = wx.getLaunchOptionsSync()
-        console.log(obj)
-        console.log("obj")
+       let vip_state = wx.getStorageSync("vip_state")
+       console.log(vip_state,'vip_state')
         if(obj.query.server_id){
             wx.setStorageSync('server_id', obj.query.server_id)
             console.log(obj.query.server_id)
         }
+        if (vip_state == 1) {
+            this.setData({
+               flag: false
+            })
+            this.getInitData(this.data.type_id)
+            console.log(this.data.type_id,'this.data.type_id')
+         }
+      
+      this.setData({
+         vip_state: vip_state
+      })
+      
 
     },
     onReady: function () {
@@ -174,9 +187,9 @@ Page({
         });
     },
     getInitData(type_id){
+     console.log(type_id)
       wx.request({
         url: 'https://ljjz.guaishe.com/index.php/index/Services/returnServices2',
-        complete: (res) => {},
         data: {
             type_id:type_id
         },
@@ -190,10 +203,20 @@ Page({
 
             //价格数字变换
             let serve_data = data.services
-            for (let k = 0; k < serve_data.length; k++) {
-                let price = String(serve_data[k].price);
-                serve_data[k].price_a = price.split('');
-            };
+            if (this.data.vip_state == 1) {
+                for (let k = 0; k < serve_data.length; k++) {
+                   let price = String(serve_data[k].vip_price);
+                   serve_data[k].price_a = price.split('');
+                };
+             } else if (this.data.vip_state == 0) {
+                for (let k = 0; k < serve_data.length; k++) {
+                   let price = String(serve_data[k].price);
+                   serve_data[k].price_a = price.split('');
+                };
+             }
+          
+
+
             let explain_data=[]
             explain_data.push({t:data.services[0].explain1})
             explain_data.push({t:data.services[0].explain2})
@@ -398,14 +421,24 @@ Page({
                     server_id:server_id?server_id:7
                 },
                 success: (res) => {
-
+                    console.log(res)
                     if (res.data.code == 200) {
                         wx.setStorageSync("token", res.data.id)
+                        console.log(res.data.state,"res.data.state")
+                        wx.setStorageSync("vip_state", res.data.vip)
+                        if(res.data.vip==1){
+                            this.setData({
+                               flag:false
+                            })
+                         }
                         this.setData({
-                            showLogin: false,
-                            user_id: res.data.id
+                           vip_state: res.data.vip,
+                           showLogin: false,
+                           user_id: res.data.id
                         })
+                        
                         app.alert("登录成功")
+                        this.getInitData(this.data.type_id)
                     } else {
                         app.alert("发生错误，请稍后重试")
                     }
@@ -579,5 +612,17 @@ Page({
     },
     a(){
         console.log("阻止冒泡")
-    }
+    },
+    goVip() { //开通vip
+        if (this.data.user_id) {
+           wx.navigateTo({
+              url: '../vip/vip',
+           })
+  
+        } else {
+           this.setData({
+              showLogin: true
+           });
+        }
+     }
 })

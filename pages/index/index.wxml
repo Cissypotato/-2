@@ -14,33 +14,53 @@
 	</view>
 
 	<view class="scroll-top bc"></view>
-	<scroll-view class="scroll-view_H bc" scroll-x="true">
-		<view class="scroll-view-item_H {{service_index==index?'scroll-view-item_active':''}}" wx:for="{{serve_data}}" wx:key="item" data-id="{{item.id}}" bindtap="chooseService" data-index="{{index}}">
-			<view class="info_1">{{item.title}}</view>
-			<view class="info_2">
-				{{item.pingmi}}
-				<text class="time">{{item.unit}}</text>
-			</view>
-			<view class="info_3">
-				<span wx:for="{{item.price_a}}" wx:key="item" wx:for-item="it">
-					<icon class="iconfont icon-A{{it}} l"></icon>
-				</span>
-				<span class="yuan">元</span>
-                <!-- <span class="vip">{{item.vip_price}}元 <span>vip</span></span> -->
+	 <!-- 普通客户 -->
+   <scroll-view wx:if='{{flag}}' class="scroll-view_H bc" scroll-x="true">
+      <view class="scroll-view-item_H {{service_index==index?'scroll-view-item_active':''}}" wx:for="{{serve_data}}" wx:key="item" data-id="{{item.id}}" bindtap="chooseService" data-index="{{index}}">
+         <view class="info_1">{{item.title}}</view>
+         <view class="info_2">
+            {{item.pingmi}}
+            <text class="time">{{item.unit}}</text>
+         </view>
+         <view class="info_3">
+            <span wx:for="{{item.price_a}}" wx:key="item" wx:for-item="it">
+               <icon class="iconfont icon-A{{it}} l"></icon>
+            </span>
+            <span class="yuan">元</span>
+            <icon class="iconfont icon-tubiaozhizuomoban- r"></icon>
+         </view>
+      </view>
+   </scroll-view>
+   <!-- vip用户 -->
+   <scroll-view wx:if="{{vip_state==1}}" class="scroll-view_H bc" scroll-x="true">
+      <view class="scroll-view-item_H {{service_index==index?'scroll-view-item_actives':''}}" wx:for="{{serve_data}}" wx:key="item" data-id="{{item.id}}" bindtap="chooseService" data-index="{{index}}">
+         <view class="info_1">{{item.title}}</view>
+         <view class="info_2">
+            {{item.pingmi}}
+            <text class="time">{{item.unit}}</text>
+         </view>
+         <view class="info_3">
+            <span wx:for="{{item.price_a}}" wx:key="item" wx:for-item="it">
+               <icon class="iconfont icon-A{{it}} l"></icon>
+            </span>
+            <span class="yuans">元
+               <image class="del" src="../../images/vip_pay.png" mode="widthFix"></image>
+            </span>
+            <icon class="iconfont icon-tubiaozhizuomoban- r"></icon>
+         </view>
+      </view>
+   </scroll-view>
+   <!-- vip广告 -->
+   <view class="coupon-pack">
+      <icon class="iconfont icon-zhuyi"></icon>
+      <text>{{info_data.info_3}}</text>
+   </view>
+   <view class="coupon-pack_two">
+      <image src="../../images/vip.jpg" mode="widthFiex"></image>
+      <view bindtap="goVip">立即开通</view>
+   </view>
 
-				<icon class="iconfont icon-tubiaozhizuomoban- r"></icon>
-				<!-- <view>
-                    <span bindtap="handleServiceNum" data-type="reduce">-</span>{{service_num}}<span bindtap="handleServiceNum" data-type="add">+</span>
-                
-                </view> -->
-			</view>
-		</view>
-	</scroll-view>
-
-	<view class="coupon-pack">
-		<icon class="iconfont icon-zhuyi"></icon>
-		<text>{{info_data.info_3}}</text>
-	</view>
+	
 
 	<!--
     <view class="line"></view>

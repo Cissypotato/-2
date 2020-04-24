@@ -1,0 +1,29 @@
+<!--pages/vip/vip.wxml-->
+<view class="main">
+   <image src="../../images/vip_img.jpg" mode="widthFix"></image>
+   <view bindtap="pay">立即支付</view>
+</view>
+
+<!-- 登录 -->
+<view class="cover" wx:if="{{showLogin}}">
+   <view class="login">
+      <view class="title">登录后查看更多服务</view>
+      <view class="tel">
+         <input type="number" placeholder="请输入您的手机号码" placeholder-class="placeholder" bindblur="getInputValue" data-name="tel"></input>
+      </view>
+      <view class="certifycode">
+         <input name='certifycode' placeholder="请输入验证码" placeholder-class="placeholder" bindblur="getInputValue" data-name="code"></input>
+         <span wx:if="{{showSecond}}">{{second}}</span>
+         <span bindtap="getCode" wx:else>获取验证码</span>
+      </view>
+      <view class="btn">
+         <span class="cancel" bindtap="closeLogin">取消</span>
+         <span class="login-w" bindtap="login">登录</span>
+      </view>
+   </view>
+</view>
+
+<!-- 购买成功 -->
+<view wx:if='{{flag}}' class="mo" bindtap="end">
+   <image src="../../images/ok.png" mode="widthFix"></image>
+</view>

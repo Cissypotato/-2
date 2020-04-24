@@ -198,3 +198,77 @@ rich-text{width: 100vw;}
     /* margin-left: 350rpx; */
 }
 
+
+.info_3 .yuans {
+    position: relative;
+    top: 0.1rem;
+    color: #ff8a65;
+ }
+ 
+ .info_3 .yuans>.del {
+    width: 100rpx;
+    height: 100rpx;
+    position: absolute;
+    top: -5rpx;
+    left: 40rpx;
+    /* transform:rotate(7deg); */
+ }
+ 
+ .scroll-view-item_actives {
+    box-shadow: 0 6rpx 7rpx 0 rgba(12, 7, 7, 0.1);
+    color: #424242;
+ }
+ 
+ .scroll-view-item_actives .r {
+    float: right;
+    color: #ff5722;
+ }
+ 
+ .scroll-view-item_actives .l {
+    color: #ff5722;
+ }
+ 
+ /* 优惠券 */
+ 
+ .coupon-pack {
+    width: 90vw;
+    padding: 0.5em 5vw;
+    line-height: 4vw;
+    color: #35bb9a;
+    font-size: 0.8rem;
+ }
+ 
+ .coupon-pack>text {
+    margin-left: 0.5em;
+ }
+ 
+ /* vip */
+ 
+ .coupon-pack_two {
+    width: 100vw;
+    /* padding: 0.5em 5vw; */
+    line-height: 4vw;
+    color: #f90;
+    font-size: 0.8rem;
+    position: relative;
+ }
+ 
+ .coupon-pack_two>image {
+    width: 100vw;
+    height: 100rpx;
+ }
+ 
+ .coupon-pack_two>view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 125rpx;
+    height: 60rpx;
+    background-color: #9c7e49;
+    color: white;
+    font-size: 23rpx;
+    border-radius: 15px;
+    position: absolute;
+    top: 25rpx;
+    right: 20rpx;
+ }
