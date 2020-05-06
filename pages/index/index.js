@@ -133,7 +133,6 @@ Page({
 
         //获取页面ID
         let type_id=options.id?options.id:6
-        console.log(type_id)
         this.setData({type_id})
         this.getInitData(type_id)
         //获取用户信息
@@ -187,7 +186,6 @@ Page({
         });
     },
     getInitData(type_id){
-     console.log(type_id)
       wx.request({
         url: 'https://ljjz.guaishe.com/index.php/index/Services/returnServices2',
         data: {
@@ -195,7 +193,6 @@ Page({
         },
         fail: (res) => {},
         success: (result) => {
-            console.log(result)
             let data=result.data.info
             let info_data=this.data.info_data
             info_data.info_1=data.title.name
@@ -275,7 +272,6 @@ Page({
             });
 
         };
-        console.log(t_list)
         then.setData({
             t_list,
         });

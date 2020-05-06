@@ -78,7 +78,7 @@
 
 	<view class="{{tab_title_show?'page_tab':''}}" id="tab_k">
 		<view class="tab_title" wx:if="{{tab_title_show}}">{{info_data.info_1}}</view>
-		<view class="line"></view>
+		<!-- <view class="line"></view> -->
 		<view class="tab_pack">
 			<view class="tab" data-id="0" bindtap="tabClick">
 				<t>服务内容</t>
