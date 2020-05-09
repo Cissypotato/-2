@@ -56,8 +56,8 @@
       <text>{{info_data.info_3}}</text>
    </view>
    <view class="coupon-pack_two">
-      <image src="../../images/vip.jpg" mode="widthFiex"></image>
-      <view bindtap="goVip">立即开通</view>
+      <image src="../../images/summer1.png" mode="widthFiex"></image>
+      <!-- <view bindtap="goVip">立即开通</view> -->
    </view>
 
 	
@@ -285,7 +285,8 @@
 			</view>
 		</view>
 		<view class="total">
-			<span>总价：<span>{{service_num*service_price}}</span>元</span>
+			<span wx:if="{{vip_state==0}}">总价：<span>{{service_num*service_price}}</span>元</span>
+			<span wx:if="{{vip_state==1}}">总价：<span>{{service_num*service_vip_price}}</span>元</span>
 		</view>
 		<view class="pay">
 			<span bindtap="numConfirm">确定</span>
@@ -294,10 +295,4 @@
 	</view>
 
 
-</view>
-
-
-<view class="summer-wrapper" wx:if="{{type_id!=33}}">
-
-	<image src="/images/summer.png" mode="widthFix" bindtap="toSummer"></image>
 </view>

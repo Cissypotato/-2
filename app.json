@@ -6,10 +6,8 @@
         "pages/personal/personal",
         "pages/order/order",
         "pages/address/address",
-        "pages/vip/vip"
-
-        
-        
+        "pages/vip/vip",
+        "pages/summer/airCondition"
     ],
     "window": {
         "backgroundTextStyle": "light",

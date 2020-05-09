@@ -20,7 +20,10 @@
 	<view class="foot_pack">
 		<t class="l">
 			<t>￥{{price}}</t>
-			<test wx:if="{{status==0 && services.price>15}}">首单直减15</test>
+			<test wx:if="{{status==0 && services.price>15 && airCondition!=1}}">首单直减15</test>
+			<test wx:if="{{status==0 && services.price>15 && airCondition==1 &&service_num==1}}">首单直减15</test>
+			<test wx:elif="{{airCondition==1 && service_num>1 && status==0 && is_air==0}}">首单及空调券减65</test>
+			<test wx:elif="{{airCondition==1 && service_num>1 && status!=0 && is_air==0}}">空调券减50</test>
 		</t>
 		<t class="r" bindtap="topay">立即支付</t>
 	</view>

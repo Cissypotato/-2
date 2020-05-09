@@ -67,6 +67,12 @@
 					"pathName": "pages/myOrder/myOrder",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/summer/airCondition",
+					"pathName": "pages/summer/airCondition",
+					"scene": null
 				}
 			]
 		}

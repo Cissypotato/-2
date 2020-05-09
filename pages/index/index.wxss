@@ -844,3 +844,8 @@ rich-text {
    top: 25rpx;
    right: 20rpx;
 }
+/*夏日优惠券 cissy*/
+.summer-wrapper{
+   position: fixed; bottom: 20vh;right: 5vw;width: 22vw;
+}
+.summer-wrapper>image{width: 100%;}

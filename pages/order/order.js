@@ -62,8 +62,10 @@ Page({
       //console.log(services_id)
       let vip_state = wx.getStorageSync('vip_state')
       let services_id = options.service_id;
-      let service_num = options.service_num ? options.service_num : 1;
+      let service_num = options.service_num ? Number(options.service_num) : 1;
+      let airCondition=options.airCondition? Number(options.airCondition) : 0;//是否为空调类别
       console.log(service_num)
+      console.log(airCondition,'airCondition')
       let address_id = options.address_id;
       let user_id = wx.getStorageSync("token");
       let dateArr = this.getDate();
@@ -73,7 +75,8 @@ Page({
          services_id,
          address_id,
          service_num,
-         vip_state
+         vip_state,
+         airCondition
       })
       if (address_id) {
          wx.request({
@@ -85,19 +88,58 @@ Page({
 
             },
             success: (res) => {
+               console.log(res)
                var price = 0
-               if (res.data.status == 0 && res.data.services.price > 15) {
-                  if (vip_state == 1) {
-                     price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100
-                  } else {
-                     price = (res.data.services.price * 100 * service_num - 15 * 100) / 100
+               // if (res.data.status == 0 && res.data.services.price > 15) {
+               //    if (vip_state == 1) {
+               //       price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100
+               //    } else {
+               //       price = (res.data.services.price * 100 * service_num - 15 * 100) / 100
+               //    }
+
+               // } else {
+               //    if (vip_state == 1) {
+               //       price = res.data.services.vip_price * service_num
+               //    } else {
+               //       price = res.data.services.price * service_num
+               //    }
+
+               // };
+               if (res.data.status == 0 && res.data.services.price > 15) {//首单
+                  
+                   if (this.data.vip_state == 1) {//vip
+                     if(airCondition==1 && res.data.is_air ==0 && service_num>1){//空调第一次使用且一台以上
+                        price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100 - 50
+                        console.log(price,'114')
+                     }else{
+                        price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100
+                     }
+                  }else {//非vip
+                     if(airCondition==1 && res.data.is_air ==0 && service_num>1){//空调第一次使用且一台以上
+                        price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100 - 50
+                        console.log(price,'114')
+                     }else{
+                        price = (res.data.services.price * 100 * service_num - 15 * 100) / 100
+                     }
+                    
                   }
 
-               } else {
-                  if (vip_state == 1) {
-                     price = res.data.services.vip_price * service_num
-                  } else {
-                     price = res.data.services.price * service_num
+               } else {//非首单
+                  if (this.data.vip_state == 1) {//vip
+                     if(this.data.airCondition==1 && res.data.is_air ==0 && this.data.service_num>1){//空调第一次使用且一台以上
+                        price = (res.data.services.vip_price * 100 * service_num) / 100 - 50
+                        console.log(price,'163')
+                     }else{
+                        price = (res.data.services.vip_price * 100 * service_num) / 100
+                     }
+                  }else {//非vip
+                     if(this.data.airCondition==1 && res.data.is_air ==0 && this.data.service_num>1){//空调第一次使用且一台以上
+                        price = (res.data.services.vip_price * 100 * service_num) / 100 - 50
+                        console.log(price,'170')
+                     }else{
+                        price = (res.data.services.price * 100 * service_num) / 100
+                     }
+                    
                   }
 
                };
@@ -106,6 +148,7 @@ Page({
                   services: res.data.services,
                   status: res.data.status,
                   price: price,
+                  is_air:res.data.is_air
                });
             },
          })
@@ -116,21 +159,55 @@ Page({
             data: {
                services_id,
                user_id,
-
             },
             success: (res) => {
                console.log(res)
                var price = 0
-               if (res.data.status == 0 && res.data.services.price > 15) {
-                  price = (res.data.services.price * service_num * 100 - 15 * 100) / 100
-               } else {
-                  price = res.data.services.price * service_num
+              
+               if (res.data.status == 0 && res.data.services.price > 15) {//首单                 
+                  if (this.data.vip_state == 1) {//vip
+                    if(this.data.airCondition==1 && res.data.is_air ==0 && this.data.service_num>1){//空调第一次使用且一台以上
+                       price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100 - 50
+                       console.log(price,'163')
+                    }else{
+                       price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100
+                    }
+                 }else {//非vip
+                    if(this.data.airCondition==1 && res.data.is_air ==0 && this.data.service_num>1){//空调第一次使用且一台以上
+                       price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100 - 50
+                       console.log(price,'170')
+                    }else{
+                       price = (res.data.services.price * 100 * service_num - 15 * 100) / 100
+                    }
+                   
+                 }
+
+              } else {//非首单
+               if (this.data.vip_state == 1) {//vip
+                  if(this.data.airCondition==1 && res.data.is_air ==0 && this.data.service_num>1){//空调第一次使用且一台以上
+                     price = (res.data.services.vip_price * 100 * service_num) / 100 - 50
+                     console.log(price,'163')
+                  }else{
+                     price = (res.data.services.vip_price * 100 * service_num) / 100
+                  }
+               }else {//非vip
+                  if(this.data.airCondition==1 && res.data.is_air ==0 && this.data.service_num>1){//空调第一次使用且一台以上
+                     price = (res.data.services.vip_price * 100 * service_num) / 100 - 50
+                     console.log(price,'170')
+                  }else{
+                     price = (res.data.services.price * 100 * service_num) / 100
+                  }
+                 
                }
+
+
+              };
                this.setData({
                   address: res.data.address,
                   services: res.data.services,
                   status: res.data.status,
-                  price
+                  price,
+                  is_air:res.data.is_air
                })
             },
          })
@@ -155,20 +232,42 @@ Page({
                user_id
             },
             success: (res) => {
-               console.log(res)
+               console.log(res.data.is_air)
                var price = 0
-               if (res.data.status == 0 && res.data.services.price > 15) {
-                  if (this.data.vip_state == 1) {
-                     price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100
-                  } else {
-                     price = (res.data.services.price * 100 * service_num - 15 * 100) / 100
+               if (res.data.status == 0 && res.data.services.price > 15) {//首单
+                  if (this.data.vip_state == 1) {//vip
+                     if(this.data.airCondition==1 && res.data.is_air ==0 && this.data.service_num>1){//空调第一次使用且一台以上
+                        price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100 - 50
+                        console.log(price,'163')
+                     }else{
+                        price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100
+                     }
+                  }else {//非vip
+                     if(this.data.airCondition==1 && res.data.is_air ==0 && this.data.service_num>1){//空调第一次使用且一台以上
+                        price = (res.data.services.vip_price * 100 * service_num - 15 * 100) / 100 - 50
+                        console.log(price,'170')
+                     }else{
+                        price = (res.data.services.price * 100 * service_num - 15 * 100) / 100
+                     }
+                    
                   }
 
-               } else {
-                  if (this.data.vip_state == 1) {
-                     price = res.data.services.vip_price * service_num
-                  } else {
-                     price = res.data.services.price * service_num
+               } else {//非首单
+                  if (this.data.vip_state == 1) {//vip
+                     if(this.data.airCondition==1 && res.data.is_air ==0 && this.data.service_num>1){//空调第一次使用且一台以上
+                        price = (res.data.services.vip_price * 100 * service_num) / 100 - 50
+                        console.log(price,'163')
+                     }else{
+                        price = (res.data.services.vip_price * 100 * service_num) / 100
+                     }
+                  }else {//非vip
+                     if(this.data.airCondition==1 && res.data.is_air ==0 && this.data.service_num>1){//空调第一次使用且一台以上
+                        price = (res.data.services.vip_price * 100 * service_num) / 100 - 50
+                        console.log(price,'170')
+                     }else{
+                        price = (res.data.services.price * 100 * service_num) / 100
+                     }
+                    
                   }
 
                };
@@ -176,7 +275,8 @@ Page({
                   address: res.data.address,
                   services: res.data.services,
                   status: res.data.status,
-                  price
+                  price,
+                  is_air:res.data.is_air
                })
                wx.hideLoading()
             },
@@ -331,7 +431,7 @@ Page({
          // console.log(a.getTime() / 1000)
          let upServeTime = a.getTime() / 1000
          wx.request({
-            url: appUrl + '/index.php/index/Pay/addOrder',
+            url: appUrl + '/index.php/index/Pay/addOrder1',
             data: {
                user_id: wx.getStorageSync("token"),
                address_id: this.data.address.id,
