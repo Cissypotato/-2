@@ -422,71 +422,213 @@ Page({
       if (this.data.address == null) {
          app.alert("请填写地址")
       } else if (!this.data.date || !this.data.time) {
-         // console.log(this.data.date)
-         // console.log(this.data.time)
+        
          app.alert("请选择上门服务时间")
       } else {
          let a = new Date(this.data.upServeTime)
          // console.log(this.data.upServeTime)
          // console.log(a.getTime() / 1000)
-         let upServeTime = a.getTime() / 1000
-         wx.request({
-            url: appUrl + '/index.php/index/Pay/addOrder1',
-            data: {
-               user_id: wx.getStorageSync("token"),
-               address_id: this.data.address.id,
-               shop_id: this.data.services_id,
-               start_time: upServeTime,
-               is_jb: this.data.urgent ? 1 : 0,
-               num: this.data.service_num
-            },
-            success: (res) => {
-               console.log(res)
-               let order_id = res.data.order_id
-               if (res.data.code == 200) {
-                  app.alert('预约成功,等待支付')
-                  wx.login({
-                     success: (res) => {
-                        // console.log(res)
-                        // console.log(services_id)
-                        if (res.code) {
-                           //发起网络请求
-                           wx.request({
-                              url: "https://ljjz.guaishe.com/index.php/index/pay/pays",
-                              data: {
-                                 id: order_id,
-                                 code: res.code
-                              },
-                              success: (res) => {
-                                 console.log(res)
-                                 wx.requestPayment({
-                                    'timeStamp': res.data.timeStamp,
-                                    'nonceStr': res.data.nonceStr,
-                                    'package': res.data.package,
-                                    'signType': res.data.signType,
-                                    'paySign': res.data.paySign,
-                                    'success': (res) => {
-                                       wx.redirectTo({
-                                          url: '/pages/index/index',
-                                          complete: function(res) {},
-                                       })
-                                    },
-                                    'fail': function(res) {
-                                       console.log(res)
-                                       app.alert("支付失败")
-                                    },
+         let upServeTime = a.getTime() / 100
+         let share_id = wx.getStorageSync("share_id");
+         let user_id = wx.getStorageSync("token");
+         // let user_id = Number(share_id)
+         console.log(user_id)
+         // 用户id和分享id相同
+         if (share_id == user_id || !share_id) {
+            console.log("1")
+            wx.request({
+               url: appUrl + '/index.php/index/Pay/addOrder1',
+               data: {
+                  user_id: wx.getStorageSync("token"),
+                  address_id: this.data.address.id,
+                  shop_id: this.data.services_id,
+                  start_time: upServeTime,
+                  is_jb: this.data.urgent ? 1 : 0,
+                  num: this.data.service_num
+               },
+               success: (res) => {
+                  console.log(res)
+                  let order_id = res.data.order_id
+                  if (res.data.code == 200) {
+                     app.alert('预约成功,等待支付')
+                     wx.login({
+                        success: (res) => {
+                           // console.log(res)
+                           // console.log(services_id)
+                           if (res.code) {
+                              //发起网络请求
+                              wx.request({
+                                 url: "https://ljjz.guaishe.com/index.php/index/pay/pays",
+                                 data: {
+                                    id: order_id,
+                                    code: res.code,
+                                 },
+                                 success: (res) => {
+                                    console.log(res)
+                                    wx.requestPayment({
+                                       'timeStamp': res.data.timeStamp,
+                                       'nonceStr': res.data.nonceStr,
+                                       'package': res.data.package,
+                                       'signType': res.data.signType,
+                                       'paySign': res.data.paySign,
+                                       'success': (res) => {
+                                          wx.redirectTo({
+                                             url: '/pages/index/index',
+                                             complete: function(res) {},
+                                          })
+                                       },
+                                       'fail': function(res) {
+                                          console.log(res)
+                                          app.alert("支付失败")
+                                       },
 
-                                 })
-                              },
-                           })
-                        } else {
-                           console.log('登录失败！' + res.errMsg)
+                                    })
+                                 },
+                              })
+                           } else {
+                              console.log('登录失败！' + res.errMsg)
+                           }
+
                         }
-                     }
-                  })
+                     })
+                  }
                }
-            }
-         })
+            })
+         } else if (share_id != user_id && share_id) {
+            console.log("2")
+            wx.request({
+               url: appUrl + '/index.php/index/Pay/addOrder1',
+               data: {
+                  user_id: wx.getStorageSync("token"),
+                  address_id: this.data.address.id,
+                  shop_id: this.data.services_id,
+                  start_time: upServeTime,
+                  is_jb: this.data.urgent ? 1 : 0,
+                  share_id: share_id,
+                  num: this.data.service_num
+               },
+               success: (res) => {
+                  console.log(res)
+                  let order_id = res.data.order_id
+                  if (res.data.code == 200) {
+                     app.alert('预约成功,等待支付')
+                     wx.login({
+                        success: (res) => {
+                           // console.log(res)
+                           // console.log(services_id)
+                           if (res.code) {
+                              //发起网络请求
+                              wx.request({
+                                 url: "https://ljjz.guaishe.com/index.php/index/pay/pays",
+                                 data: {
+                                    id: order_id,
+                                    code: res.code,
+                                 },
+                                 success: (res) => {
+                                    console.log(res)
+                                    wx.requestPayment({
+                                       'timeStamp': res.data.timeStamp,
+                                       'nonceStr': res.data.nonceStr,
+                                       'package': res.data.package,
+                                       'signType': res.data.signType,
+                                       'paySign': res.data.paySign,
+                                       'success': (res) => {
+                                          wx.redirectTo({
+                                             url: '/pages/index/index',
+                                             complete: function(res) {},
+                                          })
+                                       },
+                                       'fail': function(res) {
+                                          console.log(res)
+                                          app.alert("支付失败")
+                                       },
+
+                                    })
+                                 },
+                              })
+                           } else {
+                              console.log('登录失败！' + res.errMsg)
+                           }
+
+                        }
+                     })
+                  }
+               }
+            })
+         }
+
+
       }
    },
+   // topay() { //预约并支付
+   //    if (this.data.address == null) {
+   //       app.alert("请填写地址")
+   //    } else if (!this.data.date || !this.data.time) {
+   //       // console.log(this.data.date)
+   //       // console.log(this.data.time)
+   //       app.alert("请选择上门服务时间")
+   //    } else {
+   //       let a = new Date(this.data.upServeTime)
+   //       // console.log(this.data.upServeTime)
+   //       // console.log(a.getTime() / 1000)
+   //       let upServeTime = a.getTime() / 1000
+   //       wx.request({
+   //          url: appUrl + '/index.php/index/Pay/addOrder1',
+   //          data: {
+   //             user_id: wx.getStorageSync("token"),
+   //             address_id: this.data.address.id,
+   //             shop_id: this.data.services_id,
+   //             start_time: upServeTime,
+   //             is_jb: this.data.urgent ? 1 : 0,
+   //             num: this.data.service_num
+   //          },
+   //          success: (res) => {
+   //             console.log(res)
+   //             let order_id = res.data.order_id
+   //             if (res.data.code == 200) {
+   //                app.alert('预约成功,等待支付')
+   //                wx.login({
+   //                   success: (res) => {
+   //                      // console.log(res)
+   //                      // console.log(services_id)
+   //                      if (res.code) {
+   //                         //发起网络请求
+   //                         wx.request({
+   //                            url: "https://ljjz.guaishe.com/index.php/index/pay/pays",
+   //                            data: {
+   //                               id: order_id,
+   //                               code: res.code
+   //                            },
+   //                            success: (res) => {
+   //                               console.log(res)
+   //                               wx.requestPayment({
+   //                                  'timeStamp': res.data.timeStamp,
+   //                                  'nonceStr': res.data.nonceStr,
+   //                                  'package': res.data.package,
+   //                                  'signType': res.data.signType,
+   //                                  'paySign': res.data.paySign,
+   //                                  'success': (res) => {
+   //                                     wx.redirectTo({
+   //                                        url: '/pages/index/index',
+   //                                        complete: function(res) {},
+   //                                     })
+   //                                  },
+   //                                  'fail': function(res) {
+   //                                     console.log(res)
+   //                                     app.alert("支付失败")
+   //                                  },
+
+   //                               })
+   //                            },
+   //                         })
+   //                      } else {
+   //                         console.log('登录失败！' + res.errMsg)
+   //                      }
+   //                   }
+   //                })
+   //             }
+   //          }
+   //       })
+   //    }
+   // },
 });
