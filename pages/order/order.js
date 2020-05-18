@@ -330,6 +330,7 @@ Page({
             urgent
          })
       }
+      console.log(time)
 
       this.setData({
          time,
@@ -428,11 +429,12 @@ Page({
          let a = new Date(this.data.upServeTime)
          // console.log(this.data.upServeTime)
          // console.log(a.getTime() / 1000)
-         let upServeTime = a.getTime() / 100
+         let upServeTime = a.getTime() / 1000
+         // console.log(upServeTime)
          let share_id = wx.getStorageSync("share_id");
          let user_id = wx.getStorageSync("token");
          // let user_id = Number(share_id)
-         console.log(user_id)
+         // console.log(user_id)
          // 用户id和分享id相同
          if (share_id == user_id || !share_id) {
             console.log("1")
